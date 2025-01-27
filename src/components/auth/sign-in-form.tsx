@@ -22,8 +22,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
-import { authClient } from '@/lib/auth/client';
-import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
   email: zod.string().min(1, { message: 'Email is required' }).email(),
@@ -36,8 +34,6 @@ const defaultValues = { email: 'sofia@devias.io', password: 'Secret1' } satisfie
 
 export function SignInForm(): React.JSX.Element {
   const router = useRouter();
-
-  const { checkSession } = useUser();
 
   const [showPassword, setShowPassword] = React.useState<boolean>();
 
@@ -54,10 +50,15 @@ export function SignInForm(): React.JSX.Element {
     async (values: Values): Promise<void> => {
       setIsPending(true);
 
+      console.log(values, 'values');
+
       const response: any = await signIn('credentials', {
-        ...values,
+        username: values.email,
+        password: values.password,
         redirect: false,
       });
+
+      console.log(response, 'response');
 
       if (!_.isEmpty(response.error)) {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -69,7 +70,7 @@ export function SignInForm(): React.JSX.Element {
 
       router.replace('/dashboard');
     },
-    [checkSession, router, setError]
+    [router, setError]
   );
 
   return (

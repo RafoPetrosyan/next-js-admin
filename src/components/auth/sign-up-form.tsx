@@ -20,7 +20,6 @@ import { z as zod } from 'zod';
 
 import { paths } from '@/paths';
 import { authClient } from '@/lib/auth/client';
-import { useUser } from '@/hooks/use-user';
 
 const schema = zod.object({
   firstName: zod.string().min(1, { message: 'First name is required' }),
@@ -36,8 +35,6 @@ const defaultValues = { firstName: '', lastName: '', email: '', password: '', te
 
 export function SignUpForm(): React.JSX.Element {
   const router = useRouter();
-
-  const { checkSession } = useUser();
 
   const [isPending, setIsPending] = React.useState<boolean>(false);
 
@@ -61,13 +58,12 @@ export function SignUpForm(): React.JSX.Element {
       }
 
       // Refresh the auth state
-      await checkSession?.();
 
       // UserProvider, for this case, will not refresh the router
       // After refresh, GuestGuard will handle the redirect
       router.refresh();
     },
-    [checkSession, router, setError]
+    [router, setError]
   );
 
   return (

@@ -3,9 +3,11 @@ import type { NextAuthOptions, User } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GithubProvider from 'next-auth/providers/github';
 
+import { paths } from '@/paths';
+
 interface SignInResponse {
   status: string;
-  user: User; // Ensure this matches the expected User type
+  user: User;
 }
 
 const authOptions: NextAuthOptions = {
@@ -30,7 +32,7 @@ const authOptions: NextAuthOptions = {
         try {
           const { data }: { data: SignInResponse } = await axios.post(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/sign-in`,
-            { username, password },
+            { email: username, password },
             {
               headers: {
                 'Content-Type': 'application/json',
@@ -51,7 +53,7 @@ const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: '/admin/sign-in',
+    signIn: paths.auth.signIn,
   },
   callbacks: {
     async jwt({ token, user }) {

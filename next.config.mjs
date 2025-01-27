@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: false,
+  experimental: {
+    runtime: 'edge',
+  },
   images: {
     remotePatterns: [
       {

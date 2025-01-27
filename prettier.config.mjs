@@ -21,7 +21,7 @@ const config = {
     '^@/data/(.*)$',
     '^@/lib/(.*)$',
     '^@/actions/(.*)$',
-    '^@/contexts/(.*)$',
+    '^@/wrappers/(.*)$',
     '^@/hooks/(.*)$',
     '^@/components/(.*)$',
     '^@/styles/(.*)$',
